@@ -110,7 +110,7 @@ class Settings(BaseSettings):
     DDB_CONVERSATIONS_TABLE : str
 #
 #   # Semantic cache
-    SEMANTIC_CACHE_ENABLED: bool
+    SEMANTIC_CACHE_ENABLED: bool = False
     SEMANTIC_CACHE_REDIS_URL : str       # ElastiCache (Redis) endpoint
     SEMANTIC_CACHE_SIMILARITY_THRESHOLD: float    # e.g. 0.95
     SEMANTIC_CACHE_TTL_SECONDS : int = 3600 * 24
