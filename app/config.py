@@ -71,68 +71,71 @@ per Lambda container.
 # def get_settings() -> "Settings": ...
 
 from functools import lru_cache
+from pathlib import Path
 from typing import Literal
 
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+BASE_DIR = Path(__file__).resolve().parents[1]
+
 class Settings(BaseSettings):
     APP_NAME: str = "Chat and Ingestion Service"
     APP_ENV: Literal["local","dev","staging","prod"] = "local"
-    LOG_LEVEL: Literal["INFO","DEBUG","WARNING"] = "INFO"
-    AWS_REGION: str = "us-east-1"
+    #LOG_LEVEL: Literal["INFO","DEBUG","WARNING"] = "INFO"
+    #AWS_REGION: str = "us-east-1"
 #
     #Auth
-    COGNITO_USER_POOL_ID : str
-    COGNITO_APP_CLIENT_ID : str
-    JWT_ISSUER : str
-    JWT_AUDIENCE : str
-    JWKS_URL : str                # cached JWKS for token verification
+    #COGNITO_USER_POOL_ID : str
+    #COGNITO_APP_CLIENT_ID : str
+    #JWT_ISSUER : str
+    #JWT_AUDIENCE : str
+    #JWKS_URL : str                # cached JWKS for token verification
 #
 #   #LLM
-    ANTHROPIC_API_KEY_SECRET_ARN : str   # fetched at cold start from Secrets Manager
-    ANTHROPIC_MODEL : str                # e.g. "claude-opus-4-7"
-    ANTHROPIC_MAX_TOKENS : int = 1000
-    ANTHROPIC_TEMPERATURE : float = 0.5
-    PROMPT_CACHE_TTL_SECONDS  : int = 300     # informational; Anthropic cache TTL is fixed
+    #ANTHROPIC_API_KEY_SECRET_ARN : str   # fetched at cold start from Secrets Manager
+    #ANTHROPIC_MODEL : str                # e.g. "claude-opus-4-7"
+    #ANTHROPIC_MAX_TOKENS : int = 1000
+    #ANTHROPIC_TEMPERATURE : float = 0.5
+    #PROMPT_CACHE_TTL_SECONDS  : int = 300     # informational; Anthropic cache TTL is fixed
 #
 #   # Embeddings
-    EMBEDDING_MODEL : str                # e.g. "voyage-3" or "text-embedding-3-large"
-    EMBEDDING_DIM : int
+    #EMBEDDING_MODEL : str                # e.g. "voyage-3" or "text-embedding-3-large"
+    #EMBEDDING_DIM : int
 #
 #   # Vector store
-    VECTOR_STORE_PROVIDER : str          # "opensearch" | "pinecone" | "pgvector"
-    VECTOR_STORE_ENDPOINT : str
-    VECTOR_INDEX_NAME : str
+    #VECTOR_STORE_PROVIDER : str          # "opensearch" | "pinecone" | "pgvector"
+    #VECTOR_STORE_ENDPOINT : str
+    #VECTOR_INDEX_NAME : str
 #
 #   # Metadata / conversation store
-    DDB_DOCUMENTS_TABLE : str
-    DDB_CONVERSATIONS_TABLE : str
+    #DDB_DOCUMENTS_TABLE : str
+    #DDB_CONVERSATIONS_TABLE : str
 #
 #   # Semantic cache
-    SEMANTIC_CACHE_ENABLED: bool = False
-    SEMANTIC_CACHE_REDIS_URL : str       # ElastiCache (Redis) endpoint
-    SEMANTIC_CACHE_SIMILARITY_THRESHOLD: float    # e.g. 0.95
-    SEMANTIC_CACHE_TTL_SECONDS : int = 3600 * 48
+    #SEMANTIC_CACHE_ENABLED: bool = False
+    #SEMANTIC_CACHE_REDIS_URL : str       # ElastiCache (Redis) endpoint
+    #SEMANTIC_CACHE_SIMILARITY_THRESHOLD: float    # e.g. 0.95
+    #SEMANTIC_CACHE_TTL_SECONDS : int = 3600 * 48
 #
 #   # Ingestion
-    S3_INGESTION_BUCKET : str
-    S3_PRESIGNED_URL_TTL_SECONDS : int = 300
-    S3_MAX_UPLOAD_BYTES : int = 5 * 1024 * 1024
-    ALLOWED_MIME_TYPES : str             # csv list
-    INGESTION_WEBHOOK_URL : str       # downstream processor
-    INGESTION_WEBHOOK_SECRET_ARN : str   # HMAC signing key
+    #S3_INGESTION_BUCKET : str
+    #S3_PRESIGNED_URL_TTL_SECONDS : int = 300
+    #S3_MAX_UPLOAD_BYTES : int = 5 * 1024 * 1024
+    #ALLOWED_MIME_TYPES : str             # csv list
+    #INGESTION_WEBHOOK_URL : str       # downstream processor
+    #INGESTION_WEBHOOK_SECRET_ARN : str   # HMAC signing key
 #
 #   # Rate limiting
-    RATE_LIMIT_PER_MINUTE : int = 100
+    #RATE_LIMIT_PER_MINUTE : int = 100
 #
 #   # Guardrails
-    GUARDRAILS_PROVIDER : str = "bedrock-guardrails"            # "bedrock-guardrails" | "presidio" | "custom"
-    GUARDRAILS_POLICY_ID : str
+    #GUARDRAILS_PROVIDER : str = "bedrock-guardrails"            # "bedrock-guardrails" | "presidio" | "custom"
+    #GUARDRAILS_POLICY_ID : str
 #
 #   # Observability
-    OTEL_EXPORTER_OTLP_ENDPOINT : str
-    ENABLE_XRAY: bool
+    #OTEL_EXPORTER_OTLP_ENDPOINT : str
+    #ENABLE_XRAY: bool
 
     model_config = SettingsConfigDict(
         env_file=BASE_DIR / ".env",

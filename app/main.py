@@ -13,6 +13,9 @@ reuse them across warm invocations.
 # - app.api.v1.router (aggregated v1 router)
 # - app.exceptions.register_exception_handlers
 
+from fastapi import FastAPI
+from app.config import settings
+
 
 def create_app():
     """Build and return the FastAPI instance.
@@ -28,8 +31,31 @@ def create_app():
        in startup hook so cold-start latency is paid once per container.
     8. Return the app.
     """
-    ...
+    app = FastAPI(
+        title = settings.APP_NAME,
+        version="0.1.0",
+        description="Backend service for chat and document ingestion",
+    )
+
+    return app
 
 
 # Module-level instance so Mangum / uvicorn can import `app.main:app`.
-# app = create_app()
+app = create_app()
+
+
+@app.get("/")
+def root():
+    return {
+        "message" : "Chat and Ingestion Service is running",
+        "environment" : settings.APP_ENV
+    }
+
+
+@app.get("/health")
+def health_check():
+    return{
+        "status" : "healthy",
+        "service" : settings.APP_NAME,
+        "environment" : settings.APP_ENV,
+    }
